@@ -13,12 +13,13 @@ N2      DB      ?
 RES     DW      ?
 UNI     DB      ?
 DECE    DB      ?
-MMEN    DB      10,13,'PROGRAMA PARA CALCULADORA NUMEROS DE UN DIGITO $'
+MMEN    DB      10,13,'$ CALCULADORA NUMEROS DE UN DIGITO $'
 MN1     DB      10,10,13,'INGRESAR NUMERO 1: $'
 MN2     DB      10,13,'INGRESAR NUMERO 2: $'
 MRES    DB      10,10,13,'MULTIPLICACION: $'
 
 MNOESNUM	DB	10,10,13,'SOLO SE PUEDEN NUMEROS... $'
+MNDIVZ	DB	10,10,13,'NO ES POSIBLE DIVIDIR POR CERO... $'
 MSUM	DB     10,10,13,'SUMA: $'
 MLESS	DB     10,10,13,'RESTA: $'
 MLESSN	DB	10,10,13,'RESTA:    -$'
@@ -108,6 +109,12 @@ SALIR:  MOV     AH,4CH
 ;**********************************************************
 
 ;**********************************************************
+DIVZERO:MOV     DX,OFFSET MNDIVZ
+        CALL    VIS_MENSAJE
+        CALL    CICLOING
+;**********************************************************
+
+;**********************************************************
 BINASCII:       
 	LEA     SI,ASCVAL
         MOV     CX,5
@@ -156,25 +163,32 @@ CICLOING:
 MULTI:  MOV     DX,OFFSET MN1
 	CALL    VIS_MENSAJE
         CALL    INGRESODIG
+	AND     AL,0FH          ;CONVERSION DE ASCII A HEX
 	MOV	N1,AL
 
         MOV	DX,OFFSET MN2
 	CALL    VIS_MENSAJE
         CALL    INGRESODIG
+	AND     AL,0FH          ;CONVERSION DE ASCII A HEX
 	MOV	N2,AL
 
-        MOV     AH,0
-	MOV	AL,N1
-
-	MUL     N2
-
-	MOV	BINVAL,AX
-	CALL	BINASCII
+	MUL     N1
+        AAM
+	OR      AX,3030H        ;CONVERSION DE HEX A ASCII
+        MOV     DECE,AH
+        MOV     UNI,AL
 
 	MOV	DX,OFFSET MRES
 	CALL    VIS_MENSAJE
 	MOV	DX,OFFSET ASCVAL
 	CALL    VIS_MENSAJE
+
+        MOV     DL,DECE
+        MOV     AH,02H
+        INT     21H
+        MOV     DL,UNI
+        MOV     AH,02H
+        INT     21H
 	
         MOV	DX,OFFSET MSALIR
         CALL    VIS_MENSAJE
@@ -255,11 +269,16 @@ SUMA:	MOV     DX,OFFSET MN1
 DIVI:	MOV     DX,OFFSET MN1
 	CALL    VIS_MENSAJE
         CALL    INGRESODIG
+        AND     AL,0FH          ;CONVERSION DE ASCII A HEX
 	MOV	N1,AL
 
         MOV	DX,OFFSET MN2
 	CALL    VIS_MENSAJE
         CALL    INGRESODIG
+        CMP     AL,'0'
+        JE      DIVZERO
+	MOV	N2,AL
+        AND     AL,0FH          ;CONVERSION DE ASCII A HEX
 	MOV	N2,AL
 
 
@@ -268,13 +287,19 @@ DIVI:	MOV     DX,OFFSET MN1
         DIV     N2
 	MOV	AH,0
 
-        MOV     BINVAL, AX
-        CALL	BINASCII
-
-	MOV	DX,OFFSET MDIVICO
+        OR      AX,3030H        ;CONVERSION DE HEX A ASCII
+        MOV     DECE,AH
+        MOV     UNI,AL
+        MOV	DX,OFFSET MDIVICO
 	CALL    VIS_MENSAJE
 	MOV	DX,OFFSET ASCVAL
 	CALL    VIS_MENSAJE
+        MOV     DL,DECE
+        MOV     AH,02H
+        INT     21H
+        MOV     DL,UNI
+        MOV     AH,02H
+        INT     21H
 	
 	
 	MOV     AH,0
@@ -283,13 +308,20 @@ DIVI:	MOV     DX,OFFSET MN1
 	MOV	AL,AH
 	MOV	AH,0
 
-	MOV	BINVAL,AX
-	CALL	BINASCII
+        OR      AX,3030H        ;CONVERSION DE HEX A ASCII
+        MOV     DECE,AH
+        MOV     UNI,AL
 
 	MOV	DX,OFFSET MDIVIRE
 	CALL    VIS_MENSAJE
 	MOV	DX,OFFSET ASCVAL
 	CALL    VIS_MENSAJE
+        MOV     DL,DECE
+        MOV     AH,02H
+        INT     21H
+        MOV     DL,UNI
+        MOV     AH,02H
+        INT     21H
 	
 
         MOV	DX,OFFSET MSALIR
