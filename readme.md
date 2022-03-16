@@ -7,3 +7,4 @@
   - Entrega resultados en Decimal
   - Valida división por cero
   - Valida resta con resultados negativos
+  - Entrega Cociente y Residuo de una división
