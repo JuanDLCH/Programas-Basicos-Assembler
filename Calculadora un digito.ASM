@@ -1,39 +1,37 @@
 
 ;PROGRAMA PARA DOS NUMEROS DE UN DIGITO****************************
 ;**************************************************************************
+.MODEL  SMALL
+.386
+.STACK          ;DEFINIR SEGMENTO DE PILA
+.DATA           ;DEFINIIR SEGMENTO DE DATOS
 
-
-        .MODEL  SMALL
-        .386
-        .STACK          ;DEFINIR SEGMENTO DE PILA
-
-        .DATA           ;DEFINIIR SEGMENTO DE DATOS
-N1      DB      ?
-N2      DB      ?
-RES     DW      ?
-UNI     DB      ?
-DECE    DB      ?
-MMEN    DB      10,13,'$ CALCULADORA NUMEROS DE UN DIGITO $'
-MN1     DB      10,10,13,'INGRESAR NUMERO 1: $'
-MN2     DB      10,13,'INGRESAR NUMERO 2: $'
-MRES    DB      10,10,13,'MULTIPLICACION: $'
+N1              DB      ?
+N2              DB      ?
+RES             DW      ?
+UNI             DB      ?
+DECE            DB      ?
+MMEN            DB      10,13,'$ CALCULADORA NUMEROS DE UN DIGITO $'
+MN1             DB      10,10,13,'INGRESAR NUMERO 1: $'
+MN2             DB      10,13,'INGRESAR NUMERO 2: $'
+MRES            DB      10,10,13,'MULTIPLICACION: $'
 
 MNOESNUM	DB	10,10,13,'SOLO SE PUEDEN NUMEROS... $'
-MNDIVZ	DB	10,10,13,'NO ES POSIBLE DIVIDIR POR CERO... $'
-MSUM	DB     10,10,13,'SUMA: $'
-MLESS	DB     10,10,13,'RESTA: $'
-MLESSN	DB	10,10,13,'RESTA:    -$'
-MDIVICO	DB     10,10,13,'COCIENTE: $'
-MDIVIRE	DB     10,10,13,'RESIDUO: $'
-MDESEO	DB	10,10,13,'ESCOJA: (+)SUMAR (-)RESTAR (*)MULTIPLICAR (/)DIVIDIR: $ '
-MVALIDA	DB	10,10,13,'INGRESE UNA OPCION VALIDA... $'
+MNDIVZ	        DB	10,10,13,'NO ES POSIBLE DIVIDIR POR CERO... $'
+MSUM	        DB      10,10,13,'SUMA: $'
+MLESS	        DB      10,10,13,'RESTA: $'
+MLESSN	        DB	10,10,13,'RESTA:    -$'
+MDIVICO	        DB      10,10,13,'COCIENTE: $'
+MDIVIRE	        DB      10,10,13,'RESIDUO: $'
+MDESEO	        DB	10,10,13,'ESCOJA: (+)SUMAR (-)RESTAR (*)MULTIPLICAR (/)DIVIDIR: $ '
+MVALIDA	        DB	10,10,13,'INGRESE UNA OPCION VALIDA... $'
 
-MSALIR  DB      10,10,13,'DIGITE <S> PARA SALIR: $'
-ASCVAL  DB      5 DUP(00H),'$'
-BINVAL  DW      0000
+MSALIR          DB      10,10,13,'DIGITE <S> PARA SALIR: $'
+ASCVAL          DB      5 DUP(00H),'$'
+BINVAL          DW      0000
 
 
-        .CODE
+.CODE
         ORG     0000    ;ASEGURAR DESPLAZAMIENTO 0000 PARA EL CS
         JMP     MAIN
 
